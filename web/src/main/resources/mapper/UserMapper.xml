@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dj.web.dao.UserDao" >
+    <insert id="addUser"  useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.dj.web.model.User">
+      INSERT INTO
+            frame_user(username,passwd,email,addr,birth,create_time,update_time)
+      VALUES
+            (#{username},#{passwd},#{email},#{addr},#{birth},now(),now())
+    </insert>
+
+    <delete id="deleteUser">
+      DELETE FROM
+          frame_user
+      where
+          id = #{id}
+    </delete>
+
+
+    <select id="queryUserById" resultType="com.dj.web.model.User">
+        SELECT
+	        id,username,passwd,email,addr,birth
+        from
+            frame_user
+        where
+            id = #{id}
+    </select>
+
+
+    <select id="queryUserByPage" resultType="com.dj.web.model.User">
+        SELECT
+            id,username,passwd,email,addr,birth
+        FROM frame_user
+        <if test="sort != null">
+            ORDER BY ${sort}
+        </if>
+        LIMIT #{offset},#{limit}
+    </select>
+
+
+    <select id="queryUserCount" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          frame_user
+    </select>
+
+    <select id="queryUserByUsername"  resultType="com.dj.web.model.User">
+        SELECT
+	        id,username,passwd,email,addr,birth
+        from
+            frame_user
+        where
+            username = #{username}
+
+
+    </select>
+</mapper>
