@@ -57,7 +57,7 @@ public class SingleJedisUtil {
      * @param key
      * @param seconds
      */
-    public static void expire(String key, Integer seconds) {
+    public static void expire(String key, int seconds) {
 
         Jedis jedis = pool.getResource();
 

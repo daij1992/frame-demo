@@ -10,7 +10,7 @@ import redis.clients.jedis.JedisCluster;
 public class JedisClusterUtil {
 
 
-    private JedisCluster jedisCluster;
+    public static JedisCluster jedisCluster;
 
     public JedisCluster getJedisCluster() {
         return jedisCluster;
@@ -20,6 +20,16 @@ public class JedisClusterUtil {
         this.jedisCluster = jedisCluster;
     }
 
+
+    public  static  void del(String key){
+        jedisCluster.del(key);
+    }
+
+
+    public static  void set(String key,String value,int second){
+        jedisCluster.set(key,value);
+        jedisCluster.expire(key,second);
+    }
 
 
 }
