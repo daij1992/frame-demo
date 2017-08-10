@@ -1,7 +1,7 @@
 package com.dj.common.utils.redis;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+
+import redis.clients.jedis.JedisCluster;
 
 /**
  *  集群工具类
@@ -10,6 +10,15 @@ import redis.clients.jedis.JedisPool;
 public class JedisClusterUtil {
 
 
+    private JedisCluster jedisCluster;
+
+    public JedisCluster getJedisCluster() {
+        return jedisCluster;
+    }
+
+    public void setJedisCluster(JedisCluster jedisCluster) {
+        this.jedisCluster = jedisCluster;
+    }
 
 
 

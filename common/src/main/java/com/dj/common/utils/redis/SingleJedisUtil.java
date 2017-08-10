@@ -145,6 +145,7 @@ public class SingleJedisUtil {
         try{
             jedis.set(key,value);
             jedis.expire(key,seconds);
+
         }catch (Exception e){
             LOGGER.error("set(String key,String value) Exception",e);
             throw new RuntimeException(e);
