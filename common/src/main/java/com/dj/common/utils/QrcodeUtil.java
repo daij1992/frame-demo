@@ -15,9 +15,9 @@ import java.util.UUID;
 
 /**
  * 二维码工具类
- * 
- * @author ShenHuaJie
- * @since 2017年2月21日 下午1:30:29
+ *
+ * @author daijie
+ * @since Created by daijie on 2017-8-8.
  */
 public class QrcodeUtil {
 	public static String createQrcode(String dir, String _text) {
