@@ -1,5 +1,6 @@
-package com.dj.common.utils;
+package com.dj.common.utils.http;
 
+import com.beust.jcommander.internal.Maps;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -10,7 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by daijie on 2017-8-15.
@@ -79,7 +82,7 @@ public class HttpClientUtil {
      */
     public static String doGet(String url, String charset,
                                Map<Object, Object> params) {
-        LOGGER.info("请求的URL:{}",url);
+        LOGGER.info("请求的URL:{}    charset:{}",url,charset);
         StringBuffer param = new StringBuffer();
         int i = 0;
         for (Object key : params.keySet()) {
@@ -111,7 +114,6 @@ public class HttpClientUtil {
     }
 
 
-
     /**
      * 发送 POST 请求（HTTP），K-V形式
      *
@@ -123,6 +125,7 @@ public class HttpClientUtil {
      */
     public static String doPost(String url, String charset,
                                 Map<Object, Object> params) {
+        LOGGER.info("POST-FORM 请求的URL:{}    charset:{}",url,charset);
         CloseableHttpClient httpClient = getClient();
         String httpStr = null;
         HttpPost httpPost = new HttpPost(url);
@@ -140,35 +143,136 @@ public class HttpClientUtil {
             HttpEntity entity = response.getEntity();
             httpStr = EntityUtils.toString(entity, charset);
         } catch (IOException e) {
+            LOGGER.error("POST-FORM 请求:"+url+"  发生错误",e);
             e.printStackTrace();
         } finally {
             if (response != null) {
                 try {
                     EntityUtils.consume(response.getEntity());
                 } catch (IOException e) {
+                    LOGGER.error("POST-FORM 请求:"+url+"  发生错误",e);
                     e.printStackTrace();
                 }
             }
         }
+        LOGGER.debug("POST-FORM 请求:{}   返回:{}",url,httpStr);
         return httpStr;
     }
 
 
+    /**
+     * 发送 POST 请求（HTTP），JSON形式
+     *
+     * @param url
+     * @param json
+     *            json对象
+     * @return
+     */
+    public static String doPost(String url, String charset, Object json) {
+        LOGGER.info("POST-JSON 请求的URL:{}    charset:{}    json:{}",url,charset,json);
+        CloseableHttpClient httpClient = getClient();
+        String httpStr = null;
+        HttpPost httpPost = new HttpPost(url);
+        CloseableHttpResponse response = null;
 
+        try {
+            StringEntity stringEntity = new StringEntity(json.toString(),
+                    charset);// 解决中文乱码问题
+            stringEntity.setContentEncoding(charset);
+            stringEntity.setContentType("application/json");
+            httpPost.setEntity(stringEntity);
+            response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            httpStr = EntityUtils.toString(entity, charset);
+        } catch (IOException e) {
+            LOGGER.error("POST-JSON 请求:"+url+"  发生错误",e);
+            e.printStackTrace();
+        } finally {
+            if (response != null) {
+                try {
+                    EntityUtils.consume(response.getEntity());
+                } catch (IOException e) {
+                    LOGGER.error("POST-JSON 请求:"+url+"  发生错误",e);
+                    e.printStackTrace();
+                }
+            }
+        }
+        LOGGER.debug("POST-JSON 请求:{}   返回:{}",url,httpStr);
+        return httpStr;
+    }
+
+
+    /**
+     * 发送 POST 请求（HTTP），不带输入数据（编码默认UTF-8）
+     *
+     * @param url
+     * @return
+     */
+    public static String doPost(String url) {
+        return doPost(url, "UTF-8", Maps.newHashMap());
+    }
+    /**
+     * 发送 GET 请求（HTTP），不带输入数据（编码默认UTF-8）
+     *
+     * @param url
+     * @return
+     */
+    public static String doGet(String url) {
+        return doGet(url, "UTF-8", Maps.newHashMap());
+    }
 
     public static void main(String[] args) {
-        String get = "http://www.baidu.com/s?wd=abc&rsv_spt=1&rsv_iqid=0xc02b634d00023ae8&issp=1&f=8&rsv_bp=0&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=1&rsv_sug3=4&rsv_sug1=3&rsv_sug7=100&rsv_sug2=0&inputT=1524&rsv_sug4=1889";
-        Map<Object,Object> map = new HashMap<Object,Object>();
-        map.put("wd","abc");
-        map.put("rsv_spt","1");
+//        String get = "http://www.baidu.com/s?wd=abc&rsv_spt=1&rsv_iqid=0xc02b634d00023ae8&issp=1&f=8&rsv_bp=0&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=1&rsv_sug3=4&rsv_sug1=3&rsv_sug7=100&rsv_sug2=0&inputT=1524&rsv_sug4=1889";
+//        Map<Object,Object> map = new HashMap<Object,Object>();
+//        map.put("wd","abc");
+//        map.put("rsv_spt","1");
+//
+//
+//            System.out.println(doGet(get,"UTF-8",map));
 
-        System.out.println(doGet(get,"UTF-8",map));
+
+        ExecutorService service = Executors.newFixedThreadPool(10);
+
+        for(int i = 0;i< 200;i++){
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("111");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });}
+
+        /*for(int i = 0;i< 20;i++){
+            service.submit(new Runnable() {
+                @Override
+                public void run() {
+                    LOGGER.info("执行thread :{} start",Thread.currentThread().getName());
+//                    String get = "http://www.baidu.com/s?wd=abc&rsv_spt=1&rsv_iqid=0xc02b634d00023ae8&issp=1&f=8&rsv_bp=0&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=1&rsv_sug3=4&rsv_sug1=3&rsv_sug7=100&rsv_sug2=0&inputT=1524&rsv_sug4=1889";
+                    String get = "http://www.ba1idu.com?id="+System.currentTimeMillis();
+                    Map<Object,Object> map = new HashMap<Object,Object>();
+                    map.put("wd","abc");
+                    map.put("rsv_spt","1");
+                    doGet(get,"UTF-8",map);
+                    LOGGER.info("执行thread :{} end",Thread.currentThread().getName());
+                }
+            });
+            LOGGER.info("放入task:{}",i);
+        }
+*/
+
 
 
 
 
 
     }
+
+
+
 
 
 }
