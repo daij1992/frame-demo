@@ -15,6 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <zxing.version>3.3.0</zxing.version>
     </properties>
 
 
@@ -40,12 +41,40 @@
             <version>4.5.2</version>
         </dependency>
 
+    <!-- 二维码 -->
+    <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>core</artifactId>
+        <version>${zxing.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>javase</artifactId>
+        <version>${zxing.version}</version>
+    </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
 
+
+
+</dependencies>
 
     <build>
         <finalName>common</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
