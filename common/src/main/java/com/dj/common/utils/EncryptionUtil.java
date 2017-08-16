@@ -50,6 +50,11 @@ public class EncryptionUtil {
         }
     }
 
+    public  static byte[] base64Decode(byte[] data)  {
+            return Base64.decodeBase64(data);
+    }
+
+
 
     /**
      *
@@ -66,6 +71,14 @@ public class EncryptionUtil {
        }catch (UnsupportedEncodingException e){
            throw  new RuntimeException(e);
        }
+    }
+
+    public static  String encodeBase64(byte[] data,String charset)  {
+        try{
+            return new String(Base64.encodeBase64(data),charset);
+        }catch (UnsupportedEncodingException e){
+            throw  new RuntimeException(e);
+        }
     }
 
 
