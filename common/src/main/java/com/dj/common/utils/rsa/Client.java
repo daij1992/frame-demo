@@ -1,7 +1,6 @@
-package com.dj.common.utils.rsa.android2server;
+package com.dj.common.utils.rsa;
 
 import org.apache.commons.codec.binary.Base64;
-
 import javax.crypto.Cipher;
 import java.io.ByteArrayOutputStream;
 import java.security.Key;
@@ -38,12 +37,9 @@ public class Client {
 
     /**
      * 获取Cipher实例 指定算法名称
-     * 包含密码学算法名称,比如DES;也可以在后面包含模式和填充方式,比如RSA/ECB/NoPadding。(客户端和服务端必须保持一致)
-     * RSA/ECB/NoPadding:相同明文+相同密钥=密文相同
-     * RSA/ECB/PKCS1Padding:相同明文+相同密钥=密文不同
-     * 注意:andorid的实现是 Bouncy Castle 而java是Sun
+     * 包含密码学算法名称,比如DES;也可以在后面包含模式和填充方式,比如RSA/ECB/PKCS1Padding。(客户端和服务端必须保持一致)
      */
-    private static final String   CIPHER_TRANSFORMATION = "RSA/ECB/NoPadding";
+    private static final String   CIPHER_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
 
 
     /**
@@ -150,18 +146,4 @@ public class Client {
         out.close();
         return encryptedData;
     }
-
-
-    public static void main(String[] args) {
-        String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCGG/uSeAtea5ZkgcjxbQu7G7Ef+x01cxP+38GQHMcIIlkBxk7NuiUGGnbCshHS497b53Ai/saSyEZ+1Of97YZZ8LnQcSsLBmMoiteVxuZn/Gu3BYQYOoYL072583JGoNgL9IQTqgZmsU0/LRFxqqZhvS5t3LiyxjBNtA44B7EkKQIDAQAB";
-
-        String privateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJFobyXUSnZGC5A5VjrSZEr6J5tawdXCvdQ2R4YHzBZHgU1kVQuzUN8Luf7ENuFvFR7w3YyM82AF5NneEzRK3fmkwkCFP4ZtmttMua2QPsMd/OgMOVZAtKgvddGxwauxLOcuLpyxzeNi825niilfKCIO0CxG2jcM86tBwx2qWrhrAgMBAAECgYAWGuVCv/ot7soVO9IzEQb0KwFYabyr7XYES9gltQu+m1I53LXdGH6D2fmFlHivXr68PGvB0S+yelLnGA6dVYBXF4PT+MNPh77hfynjasNCWT4cl2fHjJiJAzho/auiuGbv1Axi7EhYF6raWSowGPOJiAJh/REppjor/4Il7P+5uQJBAMzOlMh+fDoZgKVU5m7ZSg/LGV6bAxfWnJUbpf4b1ideEmY/c9oS3q75yTzHBkbwda3RtO0xQuKwTsIVLwGQcZ0CQQC1wPZDd1Aq3HZt2j2lJLFXKB/jFJMhdws5SoRZAVMBogNXQXy+4GUi5vbnEVIJMft63wP3wgOFTixUJfFagZenAkEAxCaKKqexdLeeFTqF495p50xeRNRzlu4tU0WCqieg6F1Zg+H7o/10luKWkIYRBfogytPQ02bdp1yyYYGGXponpQJACJsFTfZ1PkJH/TWLG6mcF/NXZyoPOVNonaLQl2I/quEf5V69aFA5mahz4kboqnTKYmvyxSVTg1lLMgTF47IlGwJBAMZ5c7RhjHqs+qqRrYh1SrPjrgm7H4zpxA+0e4plO19n1ZPUCamxEyUE+hmSxvH7UCHmTJniOFai0DNy+6qFSD0=";
-
-
-
-
-
-
-    }
-
 }

@@ -1,7 +1,6 @@
-package com.dj.common.utils.rsa.android2server;
+package com.dj.common.utils.rsa;
 
 import org.apache.commons.codec.binary.Base64;
-
 import javax.crypto.Cipher;
 import java.io.ByteArrayOutputStream;
 import java.security.*;
@@ -51,12 +50,9 @@ public class Server {
 
     /**
      * 获取Cipher实例 指定算法名称
-     * 包含密码学算法名称,比如DES;也可以在后面包含模式和填充方式,比如RSA/ECB/NoPadding。(客户端和服务端必须保持一致)
-     * RSA/ECB/NoPadding:相同明文+相同密钥=密文相同
-     * RSA/ECB/PKCS1Padding:相同明文+相同密钥=密文不同
-     * 注意:andorid的实现是 Bouncy Castle 而java是Sun
+     * 包含密码学算法名称,比如DES;也可以在后面包含模式和填充方式,比如RSA/ECB/PKCS1Padding。(客户端和服务端必须保持一致)
      */
-    private static final String   CIPHER_TRANSFORMATION = "RSA/ECB/NoPadding";
+    private static final String   CIPHER_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
 
     /**
      * <p>
@@ -216,15 +212,12 @@ public class Server {
 
 
     public static void main(String[] args) throws Exception {
+        Map<String,Object> map = genKeyPair();
+        String publicKey = Server.getPublicKey(map);
+        String privateKey = Server.getPrivateKey(map);
 
-
-
-
-
-
-
-
-
+        System.out.println("公钥:"+publicKey);
+        System.out.println("私钥:"+privateKey);
     }
 
 }

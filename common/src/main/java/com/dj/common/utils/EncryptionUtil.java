@@ -33,52 +33,14 @@ public class EncryptionUtil {
     }
 
 
-    /**
-     *
-     * @param data
-     *              需要进行Base64解码的原始串
-     * @param charset
-     *          字符集 UTF-8   GBK  ISO-8859-1(保证编码/解码字符集一致)
-     * @return
-     *              base64 解码 之后的字符串
-     */
-    public  static String base64Decode(String data,String charset)  {
-        try{
-            return new String(Base64.decodeBase64(data.getBytes(charset)),charset);
-        }catch (UnsupportedEncodingException e){
-            throw  new RuntimeException(e);
-        }
-    }
 
-    public  static byte[] base64Decode(byte[] data)  {
-            return Base64.decodeBase64(data);
+    public  static byte[] base64Decode(String data)  {
+           return  Base64.decodeBase64(data);
     }
 
 
-
-    /**
-     *
-     * @param data
-     *          需要进行Base64 编码的的原始串
-     * @param charset
-     *          字符集 UTF-8   GBK  ISO-8859-1(保证编码/解码字符集一致)
-     * @return
-     *          base64 编码 之后的字符串
-     */
-    public static  String encodeBase64(String data,String charset)  {
-       try{
-           return new String(Base64.encodeBase64(data.getBytes(charset)),charset);
-       }catch (UnsupportedEncodingException e){
-           throw  new RuntimeException(e);
-       }
-    }
-
-    public static  String encodeBase64(byte[] data,String charset)  {
-        try{
-            return new String(Base64.encodeBase64(data),charset);
-        }catch (UnsupportedEncodingException e){
-            throw  new RuntimeException(e);
-        }
+    public static  String encodeBase64String(byte[] data)  {
+            return Base64.encodeBase64String(data);
     }
 
 
