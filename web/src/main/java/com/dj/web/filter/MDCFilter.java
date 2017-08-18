@@ -24,7 +24,7 @@ public class MDCFilter implements Filter{
         MDC.put("traceid",System.currentTimeMillis()+"-"+Thread.currentThread().getId());
         chain.doFilter(request,response);
         //清理 traceid tomcat线程池 内存溢出 不能用MDC.clear()
-        MDC.remove("traceid'");
+        MDC.remove("traceid");
     }
 
     public void destroy() {

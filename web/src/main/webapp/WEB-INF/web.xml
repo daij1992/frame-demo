@@ -19,6 +19,17 @@
   </listener>
 
 
+  <!--  MDCFitler（Mapped Diagnostic Context，映射调试上下文）
+          每个HTTP请求生成一个traceid,log4j打印日志时,自动打印traceid,用于日志跟踪调用链-->
+  <filter>
+    <filter-name>MDCFilter</filter-name>
+    <filter-class>com.dj.web.filter.MDCFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>MDCFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
   <!-- Spring字符集过滤器 -->
   <filter>
     <filter-name>SpringEncodingFilter</filter-name>
