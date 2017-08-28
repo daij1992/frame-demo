@@ -28,12 +28,17 @@
         <property name="minIdle" value="${redis_minIdle}" />
         <!--获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1-->
         <property name="maxWaitMillis" value="${redis_maxWait}" />
-        <!-- 每次释放连接的最大数目 -->
+        <!-- 表示idle object evitor每次扫描的最多的对象数 -->
         <property name="numTestsPerEvictionRun" value="${redis_numTestsPerEvictionRun}" />
-        <!-- 释放连接的扫描间隔（毫秒） -->
+        <!-- 表示idle object evitor两次扫描之间要sleep的毫秒数  -->
         <property name="timeBetweenEvictionRunsMillis" value="${redis_timeBetweenEvictionRunsMillis}" />
-        <!-- 连接空闲多久后释放, 当空闲时间>该值 且 空闲连接>最大空闲连接数 时直接释放 -->
+        <!-- 表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义 -->
+        <property name="minEvictableIdleTimeMillis" value="${redis_minEvictableIdleTimeMillis}"/>
+        <!-- 在minEvictableIdleTimeMillis基础上，加入了至少minIdle个对象已经在pool里面了。
+        如果为-1，evicted不会根据idle time驱逐任何对象。
+        如果minEvictableIdleTimeMillis>0，则此项设置无意义，且只有在timeBetweenEvictionRunsMillis大于0时才有意义 -->
         <property name="softMinEvictableIdleTimeMillis" value="${redis_softMinEvictableIdleTimeMillis}"/>
+
         <!-- 在获取连接的时候检查有效性, 默认false -->
         <property name="testOnBorrow" value="true" />
         <!-- 在空闲时检查有效性, 默认false -->
@@ -42,7 +47,6 @@
         <property name="testOnReturn" value="true" />
         <!-- 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true -->
         <property name="blockWhenExhausted" value="false" />
-
     </bean>
 
 
